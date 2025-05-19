@@ -1,0 +1,9 @@
+* = Igang
+- = Ikke igang
++ = Færdig
+
+TODO:
+  [-] Opsæt en player med movement
+  [*] Opsæt et map
+  [-] Gravity og mere movement
+  [-] Collisions
