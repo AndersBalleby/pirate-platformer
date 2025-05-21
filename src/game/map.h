@@ -9,19 +9,20 @@
 
 #include "../utils/utils.h"
 
-#define MAXTILES 660 // 11 rows * 60 cols
+#define MAX_TILES 660 // 11 rows * 60 cols
+#define ROWS 11
+#define COLS 60
+#define TILE_SIZE 64
 
 typedef struct {
   Texture2D texture;
-  char image_path[256];
   Vector2 position;
 } Tile;
 
 typedef struct {
-  Tile tiles_arr[MAXTILES];
+  Tile *tiles_arr;
+  size_t arr_size;
 } Map;
 
-Tile *createTile(const char *image_path, Vector2 position, bool load_texture);
-bool generateMap(int level_id);
-
-
+Map createMap(int level_id);
+void destroyMap(Map *map);

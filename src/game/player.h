@@ -12,7 +12,7 @@ typedef struct {
   float speed;
 } Player;
 
-Player *createPlayer();
+Player createPlayer();
 
 void update(Player* player);
 void drawPlayer(Player *player);

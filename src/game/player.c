@@ -1,13 +1,11 @@
 #include "player.h"
 
-Player *createPlayer() {
-  Player *player = (Player *)malloc(sizeof(Player));
-
-  player->texture = LoadTexture(TEXTURE_PATH);
-  player->position = (Vector2){0, 0};
-  player->speed = 5.0f;
-
-  return player;
+Player createPlayer() {
+  return (Player) {
+    .texture = LoadTexture(TEXTURE_PATH),
+    .position = (Vector2) {0, 0},
+    .speed = 5.0f
+  };
 }
 
 void update(Player *player) {
@@ -25,7 +23,5 @@ void drawPlayer(Player *player) {
 }
 
 void destroyPlayer(Player *player) {
-  printf("Deallocating player\n");
   UnloadTexture(player->texture);
-  free(player);
 }

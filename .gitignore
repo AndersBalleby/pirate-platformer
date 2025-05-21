@@ -54,3 +54,6 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+bin/Debug/pirate-platformer
+bin/Debug/pirate-platformer
+.vscode/settings.json

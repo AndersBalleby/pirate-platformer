@@ -3,7 +3,6 @@
 
 // Personal imports
 #include "game/game.h"
-#include "game/player.h"
 #include "game/map.h"
 
 #define WIN_WIDTH 1280
@@ -11,31 +10,21 @@
 #define WIN_NAME "Platformer Game"
 
 int main() {
-  // Tell the window to use vsync and work on high DPI displays
   SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
-
   InitWindow(WIN_WIDTH, WIN_HEIGHT, WIN_NAME);
+  SetTargetFPS(60);
 
-  SearchAndSetResourceDir("resources");
-  
-  SetTargetFPS(60); // Vi kører på 60 fps :)
-  Player *player = createPlayer();
- 
-  generateMap(0);
-  
+  Game game = createGame();
   while (!WindowShouldClose()) {
     BeginDrawing();
 
     ClearBackground(BLACK);
-    
-    run_game();
-    update(player);
-    drawPlayer(player);
+    runGame(&game);
 
     EndDrawing();
   }
 
-  destroyPlayer(player);
+  stopGame(&game);
 
   CloseWindow();
   return 0;
