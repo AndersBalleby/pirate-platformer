@@ -1,6 +1,4 @@
 #include "game.h"
-#include "map.h"
-#include "utils/utils.h"
 
 Game createGame() {
   return (Game) {
@@ -10,11 +8,47 @@ Game createGame() {
 }
 
 void runGame(Game *game) {
-  Map map = game->map;
-  for(size_t i = 0; i < map.arr_size; ++i) {
-    Tile tile = map.tiles_arr[i];
-    DrawTextureV(tile.texture, tile.position, WHITE);
+  updateMap(&game->map);
+  updatePlayer(&game->player);
+
+  horizontal_movement_collision(game);
+  vertical_movement_collision(game);
+
+  drawMap(&game->map);
+  drawPlayer(&game->player);
+}
+
+void horizontal_movement_collision(Game *game) {
+  game->player.collision_rect.x += game->player.direction.x * game->player.speed;
+
+  for(size_t i = 0; i < game->map.arr_size; ++i) {
+    if(CheckCollisionRecs(game->map.tiles_arr[i].collision_rect, game->player.collision_rect)) {
+      if(game->player.direction.x < 0) {
+        game->player.collision_rect.x = game->map.tiles_arr[i].collision_rect.x + game->map.tiles_arr[i].collision_rect.width;
+      } else if(game->player.direction.x > 0) {
+        game->player.collision_rect.x = game->map.tiles_arr[i].collision_rect.x - game->map.tiles_arr[i].collision_rect.width;
+      }
+    }
   }
+}
+
+void vertical_movement_collision(Game *game) {
+  applyGravity(&game->player);
+  game->player.on_ground = false;
+
+  for(size_t i = 0; i < game->map.arr_size; ++i) {
+    if(CheckCollisionRecs(game->map.tiles_arr[i].collision_rect, game->player.collision_rect)) {
+      if(game->player.direction.y > 0) {
+        game->player.collision_rect.y = game->map.tiles_arr[i].collision_rect.y - game->player.collision_rect.height;
+        game->player.on_ground = true;
+        game->player.direction.y = 0;
+      } else if(game->player.direction.y < 0) {
+        game->player.collision_rect.y = game->map.tiles_arr[i].collision_rect.y + game->map.tiles_arr[i].collision_rect.height;
+        game->player.direction.y = 0;
+      }
+    }
+  }
+
 }
 
 void stopGame(Game *game) {
