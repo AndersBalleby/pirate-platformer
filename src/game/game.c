@@ -7,6 +7,7 @@ Game createGame() {
   };
 }
 
+// test
 void runGame(Game *game) {
   updateMap(&game->map);
   updatePlayer(&game->player);
