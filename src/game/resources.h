@@ -15,6 +15,7 @@ typedef struct Spritesheet {
 
 typedef struct Resources {
     Spritesheet terrain_spritesheet;
+    Spritesheet player_setup_spritesheet;
 } Resources;
 
 

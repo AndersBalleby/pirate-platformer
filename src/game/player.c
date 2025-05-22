@@ -1,11 +1,12 @@
 #include "player.h"
 
-Player createPlayer() {
+Player createPlayer(Vector2 spawn_pos) {
   Texture2D texture = LoadTexture(TEXTURE_PATH);
-  Rectangle collision_rect = (Rectangle) {100, 100, texture.width, texture.height};
+  Rectangle collision_rect = (Rectangle) {spawn_pos.x, spawn_pos.y, texture.width, texture.height};
+
   return (Player) {
     .texture = texture,
-    .position = (Vector2) {100, 100},
+    .position = spawn_pos,
     .direction = (Vector2) {0, 0},
     .collision_rect = collision_rect,
     .speed = PLAYER_SPEED,
@@ -30,7 +31,7 @@ void getInput(Player *player) {
     player->direction.x = 0;
   }
 
-  if(IsKeyPressed(KEY_SPACE) && player->on_ground) {
+  if(IsKeyDown(KEY_SPACE) && player->on_ground) {
     jump(player);
   }
 }
@@ -46,13 +47,17 @@ void applyGravity(Player *player) {
 
 void drawPlayer(Player *player) {
   DrawTextureV(player->texture, player->position, WHITE);
+  /* Collision Box
+
   DrawRectangleLines(
     (int)player->collision_rect.x,
     (int)player->collision_rect.y,
     (int)player->collision_rect.width,
     (int)player->collision_rect.height,
     RED
-);
+    );
+
+*/
 
 }
 

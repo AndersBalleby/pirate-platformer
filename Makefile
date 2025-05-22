@@ -29,7 +29,7 @@ all: $(PROJECTS)
 pirate-platformer: raylib
 ifneq (,$(raylib_quickstart_config))
 	@echo "==== Building pirate-platformer ($(raylib_quickstart_config)) ===="
-	@${MAKE} --no-print-directory -C build/build_files -f raylib-quickstart.make config=$(raylib_quickstart_config)
+	@${MAKE} --no-print-directory -C build/build_files -f raylib.make config=$(raylib_quickstart_config)
 endif
 
 raylib:

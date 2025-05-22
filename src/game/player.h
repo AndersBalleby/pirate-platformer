@@ -5,7 +5,7 @@
 #include <stdio.h>
 
 #define TEXTURE_PATH "resources/character/idle/1.png"
-#define JUMP_COOLDOWN 0.15f
+#define JUMP_COOLDOWN 0.20f
 #define JUMP_SPEED    -16
 #define GRAVITY       0.8f
 #define PLAYER_SPEED  8.0f
@@ -21,7 +21,7 @@ typedef struct {
   float gravity;
 } Player;
 
-Player createPlayer();
+Player createPlayer(Vector2 spawn_pos);
 
 void updatePlayer(Player* player);
 void drawPlayer(Player *player);
