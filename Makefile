@@ -12,49 +12,9 @@ ifeq ($(config),debug_x64)
   raylib_quickstart_config = debug_x64
   raylib_config = debug_x64
 
-else ifeq ($(config),debug_x86)
-  raylib_quickstart_config = debug_x86
-  raylib_config = debug_x86
-
-else ifeq ($(config),debug_arm64)
-  raylib_quickstart_config = debug_arm64
-  raylib_config = debug_arm64
-
 else ifeq ($(config),release_x64)
   raylib_quickstart_config = release_x64
   raylib_config = release_x64
-
-else ifeq ($(config),release_x86)
-  raylib_quickstart_config = release_x86
-  raylib_config = release_x86
-
-else ifeq ($(config),release_arm64)
-  raylib_quickstart_config = release_arm64
-  raylib_config = release_arm64
-
-else ifeq ($(config),debug_rgfw_x64)
-  raylib_quickstart_config = debug_rgfw_x64
-  raylib_config = debug_rgfw_x64
-
-else ifeq ($(config),debug_rgfw_x86)
-  raylib_quickstart_config = debug_rgfw_x86
-  raylib_config = debug_rgfw_x86
-
-else ifeq ($(config),debug_rgfw_arm64)
-  raylib_quickstart_config = debug_rgfw_arm64
-  raylib_config = debug_rgfw_arm64
-
-else ifeq ($(config),release_rgfw_x64)
-  raylib_quickstart_config = release_rgfw_x64
-  raylib_config = release_rgfw_x64
-
-else ifeq ($(config),release_rgfw_x86)
-  raylib_quickstart_config = release_rgfw_x86
-  raylib_config = release_rgfw_x86
-
-else ifeq ($(config),release_rgfw_arm64)
-  raylib_quickstart_config = release_rgfw_arm64
-  raylib_config = release_rgfw_arm64
 
 else
   $(error "invalid configuration $(config)")
@@ -87,17 +47,7 @@ help:
 	@echo ""
 	@echo "CONFIGURATIONS:"
 	@echo "  debug_x64"
-	@echo "  debug_x86"
-	@echo "  debug_arm64"
 	@echo "  release_x64"
-	@echo "  release_x86"
-	@echo "  release_arm64"
-	@echo "  debug_rgfw_x64"
-	@echo "  debug_rgfw_x86"
-	@echo "  debug_rgfw_arm64"
-	@echo "  release_rgfw_x64"
-	@echo "  release_rgfw_x86"
-	@echo "  release_rgfw_arm64"
 	@echo ""
 	@echo "TARGETS:"
 	@echo "   all (default)"
