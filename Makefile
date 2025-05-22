@@ -52,8 +52,6 @@ help:
 	@echo "TARGETS:"
 	@echo "   all (default)"
 	@echo "   clean"
-	@echo "   raylib-quickstart"
 	@echo "   raylib"
-		DrawTexture(wabbit, 400, 200, WHITE);
 	@echo ""
 	@echo "For more information, see https://github.com/premake/premake-core/wiki"
