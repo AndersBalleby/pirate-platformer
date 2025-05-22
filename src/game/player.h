@@ -1,6 +1,7 @@
 #pragma once
 
 #include "raylib.h"
+#include "utils/utils.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -9,6 +10,10 @@
 #define JUMP_SPEED    -16
 #define GRAVITY       0.8f
 #define PLAYER_SPEED  8.0f
+
+#define ROWS 11
+#define COLS 60
+#define TILE_SIZE 64
 
 typedef struct {
   Texture texture;
@@ -21,7 +26,8 @@ typedef struct {
   float gravity;
 } Player;
 
-Player createPlayer(Vector2 spawn_pos);
+Player createPlayer();
+Vector2 getSpawnPos();
 
 void updatePlayer(Player* player);
 void drawPlayer(Player *player);

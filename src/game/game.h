@@ -10,10 +10,8 @@ typedef struct Game {
     Map map;
 } Game;
 
-void horizontal_movement_collision(Game *game);
-void vertical_movement_collision(Game *game);
-
-Vector2 getPlayerSpawnPos();
+void horizontalMovementCollision(Game *game);
+void verticalMovementCollision(Game *game);
 
 Game createGame();
 void runGame(Game *game);

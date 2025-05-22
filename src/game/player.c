@@ -1,7 +1,8 @@
 #include "player.h"
 
-Player createPlayer(Vector2 spawn_pos) {
+Player createPlayer() {
   Texture2D texture = LoadTexture(TEXTURE_PATH);
+  Vector2 spawn_pos = getSpawnPos();
   Rectangle collision_rect = (Rectangle) {spawn_pos.x, spawn_pos.y, texture.width, texture.height};
 
   return (Player) {
@@ -59,6 +60,22 @@ void drawPlayer(Player *player) {
 
 */
 
+}
+
+Vector2 getSpawnPos() {
+  int map[ROWS][COLS];
+  if(readCSVToMap("levels/0/level_0_player.csv", ROWS, COLS, map)) {
+    for(int i = 0; i < ROWS; ++i) {
+      for(int j = 0; j < COLS; ++j) {
+        int value = map[i][j];
+        if(value == 0) {
+          return (Vector2) {j * TILE_SIZE, i * TILE_SIZE};
+        }
+      }
+    }
+  }
+
+  return (Vector2) {0, 0};
 }
 
 void destroyPlayer(Player *player) {

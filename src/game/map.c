@@ -42,12 +42,13 @@ TileGroup createTileGroup(const char *csv_path, Texture2D *sliced_images, TileTy
   Tile *tile_arr = (Tile*) malloc(sizeof(Tile) * MAX_TILES);
   size_t tiles_size = 0;
 
-  int map[ROWS][COLS];
+  // Map struct
   Texture2D *texture_ptr = NULL;
   Vector2 position = (Vector2) {0, 0};
   TileAttribute *attributes = NULL;
   size_t attribute_size = 0;
 
+  int map[ROWS][COLS];
   if(readCSVToMap(csv_path, ROWS, COLS, map)) {
     for(int i = 0; i < ROWS; ++i) {
       for(int j = 0; j < COLS; ++j) {
