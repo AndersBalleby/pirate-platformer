@@ -27,7 +27,7 @@ void horizontal_movement_collision(Game *game) {
       if(game->player.direction.x < 0) {
         game->player.collision_rect.x = game->map.tiles_arr[i].collision_rect.x + game->map.tiles_arr[i].collision_rect.width;
       } else if(game->player.direction.x > 0) {
-        game->player.collision_rect.x = game->map.tiles_arr[i].collision_rect.x - game->map.tiles_arr[i].collision_rect.width;
+        game->player.collision_rect.x = game->map.tiles_arr[i].collision_rect.x - game->player.collision_rect.width;
       }
     }
   }

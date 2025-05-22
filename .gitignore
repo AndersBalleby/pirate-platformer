@@ -58,7 +58,5 @@ bin/
 obj/
 build/
 
-build-MinGW-W64.bat
-build-VisualStudio2022.bat
 .vscode/settings.json
 bin/Debug/pirate-platformer
