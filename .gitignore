@@ -54,6 +54,7 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-bin/Debug/pirate-platformer
-bin/Debug/pirate-platformer
+*bin/Debug/
+build-MinGW-W64.bat
+build-VisualStudio2022.bat
 .vscode/settings.json
