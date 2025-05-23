@@ -7,6 +7,8 @@
 #define WIN_HEIGHT 800
 #define WIN_NAME "Platformer Game"
 
+#define DEBUG_MODE 1
+
 int main() {
   SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
   InitWindow(WIN_WIDTH, WIN_HEIGHT, WIN_NAME);
@@ -18,6 +20,10 @@ int main() {
 
     ClearBackground(BLACK);
     runGame(&game);
+    if(DEBUG_MODE == 1) {
+      Player *player = getPlayer(&game);
+      DrawText(TextFormat("Player Position: (%02.2f, %02.2f)", player->position.x, player->position.y), 100, 30, 25, RED); 
+    }
 
     EndDrawing();
   }

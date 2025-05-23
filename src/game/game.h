@@ -4,10 +4,12 @@
 #include "../utils/utils.h"
 #include "player.h"
 #include "map.h"
+#include "camera.h"
 
 typedef struct Game {
     Player player;
     Map map;
+    P_Camera camera;
 } Game;
 
 void horizontalMovementCollision(Game *game);
@@ -16,3 +18,6 @@ void verticalMovementCollision(Game *game);
 Game createGame();
 void runGame(Game *game);
 void stopGame(Game *game);
+void drawMap(P_Camera *camera, Player *player, Map *map);
+
+Player *getPlayer(Game *game);

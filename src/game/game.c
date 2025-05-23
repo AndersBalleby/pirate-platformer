@@ -20,6 +20,7 @@ Game createGame() {
       0, // level id
       (Resources) {terrain_spritesheet, player_setup_spritesheet} // spritesheets
     ),
+    .camera = initCamera()
   };
 }
 
@@ -30,8 +31,8 @@ void runGame(Game *game) {
   horizontalMovementCollision(game);
   verticalMovementCollision(game);
 
-  drawMap(&game->map);
-  drawPlayer(&game->player);
+  drawMap(&game->camera, &game->player, &game->map);
+  drawPlayer(&game->player, game->camera.offset);
 }
 
 void horizontalMovementCollision(Game *game) {
@@ -96,8 +97,15 @@ void verticalMovementCollision(Game *game) {
 
 }
 
+void drawMap(P_Camera *camera, Player *player, Map *map) {
+  customDraw(camera, map->tiles_arr, map->arr_size, player);
+}
+
 void stopGame(Game *game) {
   destroyMap(&game->map);
   destroyPlayer(&game->player);
 }
 
+Player *getPlayer(Game *game) {
+  return &game->player;
+}

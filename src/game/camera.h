@@ -1,0 +1,19 @@
+#pragma once
+
+#include "map.h"
+#include "player.h"
+
+#define WIN_WIDTH 1280
+#define WIN_HEIGHT 800
+
+#define CAMERA_BORDER_LEFT (WIN_WIDTH / 3)
+#define CAMERA_BORDER_RIGHT (WIN_WIDTH - (WIN_WIDTH / 3))
+
+typedef struct P_Camera {
+  Rectangle rect;
+  Vector2 offset;
+} P_Camera;
+
+P_Camera initCamera();
+void boxTargetCamera(P_Camera *camera, Player *player);
+void customDraw(P_Camera *camera, Tile *tiles_arr, size_t tiles_size, Player *player);

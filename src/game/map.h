@@ -57,4 +57,3 @@ typedef struct {
 Map createMap(int level_id, Resources resources);
 void destroyMap(Map *map);
 void updateMap(Map *map);
-void drawMap(Map *map);

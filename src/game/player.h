@@ -30,7 +30,7 @@ Player createPlayer();
 Vector2 getSpawnPos();
 
 void updatePlayer(Player* player);
-void drawPlayer(Player *player);
+void drawPlayer(Player *player, Vector2 offset);
 void destroyPlayer(Player *player); // free memory
 void getInput(Player *player);
 void jump(Player *player);

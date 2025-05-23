@@ -46,10 +46,17 @@ void applyGravity(Player *player) {
   player->collision_rect.y += player->direction.y;
 }
 
-void drawPlayer(Player *player) {
-  DrawTextureV(player->texture, player->position, WHITE);
+void drawPlayer(Player *player, Vector2 offset) {
+  Vector2 screenPos = {
+      player->position.x - offset.x,
+      player->position.y - offset.y
+  };
+
+  DrawTexture(player->texture, (int)screenPos.x, (int)screenPos.y, WHITE);
+  
   /* Collision Box
 
+  DrawTextureV(player->texture, player->position, WHITE);
   DrawRectangleLines(
     (int)player->collision_rect.x,
     (int)player->collision_rect.y,

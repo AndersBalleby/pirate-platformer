@@ -115,12 +115,6 @@ void updateMap(Map *map) {
   }
 }
 
-void drawMap(Map *map) {
-  for(size_t i = 0; i < map->arr_size; ++i) {
-    drawTile(&map->tiles_arr[i]);
-  }
-}
-
 void destroyMap(Map *map) {
   destroyResources(&map->resources);
 
