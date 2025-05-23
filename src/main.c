@@ -1,9 +1,7 @@
-#include "../include/resource_dir.h"
 #include "raylib.h"
 
 // Personal imports
 #include "game/game.h"
-#include "game/map.h"
 
 #define WIN_WIDTH 1280
 #define WIN_HEIGHT 800

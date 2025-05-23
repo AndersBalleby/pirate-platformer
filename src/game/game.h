@@ -1,7 +1,7 @@
 #pragma once
 #include <stdio.h>
 
-#include "utils/utils.h"
+#include "../utils/utils.h"
 #include "player.h"
 #include "map.h"
 
