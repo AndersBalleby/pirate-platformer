@@ -6,8 +6,10 @@
 #define WIN_WIDTH 1280
 #define WIN_HEIGHT 800
 
-#define CAMERA_BORDER_LEFT (WIN_WIDTH / 3)
-#define CAMERA_BORDER_RIGHT (WIN_WIDTH - (WIN_WIDTH / 3))
+#define CAMERA_X 300
+#define CAMERA_Y 350
+#define CAMERA_WIDTH 350
+#define CAMERA_HEIGHT 200
 
 typedef struct P_Camera {
   Rectangle rect;

@@ -22,7 +22,8 @@ int main() {
     runGame(&game);
     if(DEBUG_MODE == 1) {
       Player *player = getPlayer(&game);
-      DrawText(TextFormat("Player Position: (%02.2f, %02.2f)", player->position.x, player->position.y), 100, 30, 25, RED); 
+      DrawText(TextFormat("Player Position: (%02.2f, %02.2f)", player->position.x, player->position.y), 100, 30, 25, RED);
+      DrawText(TextFormat("Player State: (%d)", player->state), 100, 60, 25, RED);
     }
 
     EndDrawing();
