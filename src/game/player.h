@@ -28,19 +28,28 @@ typedef enum PlayerState {
   PLAYER_STATE_JUMPING
 } PlayerState; 
 
+typedef struct PlayerAnimations {
+  Texture2D idle_animations[5];
+  Texture2D fall_animations[1];
+  Texture2D jump_animations[3];
+  Texture2D run_animations[6];
+} PlayerAnimations;
+
 
 typedef struct {
-  Texture display_texture;
   Texture texture;
-  Texture rev_texture;
   Vector2 position;
   Vector2 direction;
   Rectangle collision_rect;
   float speed;
+  float animation_frame;
   bool on_ground;
+  bool on_ceiling;
+  bool on_right;
   float last_jump_time;
   float gravity;
   PlayerState state;
+  PlayerAnimations *animations;
 } Player;
 
 Player createPlayer();
@@ -56,7 +65,9 @@ void jump(Player *player);
 void applyGravity(Player *player);
 
 // Animation
+PlayerAnimations *loadPlayerAnimations();
 void animate(Player *player);
+void checkFrames(Player *player, int max_frames);
 
 // Player state
 void updatePlayerState(Player *player);

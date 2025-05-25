@@ -89,10 +89,19 @@ void verticalMovementCollision(Game *game) {
       } else if(player->direction.y < 0) {
         player->collision_rect.y = tiles_arr[i].collision_rect.y + tiles_arr[i].collision_rect.height;
         player->direction.y = 0;
+        player->on_ceiling = true;
       }
     }
 
     collideable = false;
+  }
+
+  if (player->on_ground && player->direction.y < 0 || player->direction.y > 1) {
+    player->on_ground = false;
+  }
+
+  if(player->on_ceiling && player->direction.y > 0) {
+    player->on_ceiling = false;
   }
 
 }
