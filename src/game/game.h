@@ -2,14 +2,16 @@
 #include <stdio.h>
 
 #include "../utils/utils.h"
-#include "player.h"
-#include "map.h"
 #include "camera.h"
+#include "map.h"
+#include "player.h"
+#include "sky.h"
 
 typedef struct Game {
-    Player player;
-    Map map;
-    P_Camera camera;
+  Player player;
+  Map map;
+  P_Camera camera;
+  Sky sky;
 } Game;
 
 void horizontalMovementCollision(Game *game);

@@ -22,6 +22,7 @@ typedef enum TileAttribute {
   ATTRIBUTE_COLLIDEABLE,
   ATTRIBUTE_DECORATION,
   ATTRIBUTE_INVISIBLE,
+  ATTRIBUTE_ANIMATED
 } TileAttribute;
 
 typedef enum TileType {
