@@ -1,4 +1,5 @@
 #include "camera.h"
+#include "map.h"
 
 P_Camera initCamera() {
   return (P_Camera){

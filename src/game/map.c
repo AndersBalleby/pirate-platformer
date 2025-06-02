@@ -1,8 +1,10 @@
 #include "map.h"
+#include <raylib.h>
 
-Tile createTile(Texture2D *texture, Vector2 position,
+Tile createTile(Texture2D *texture, TileType type, Vector2 position,
                 TileAttribute *tile_attributes, size_t tile_attribute_size) {
   return (Tile){.texture = texture,
+                .tile_type = type,
                 .position = position,
                 .collision_rect = (Rectangle){.x = position.x,
                                               .y = position.y,
@@ -20,12 +22,19 @@ Map createMap(int level_id, Resources resources) {
 
   size_t tiles_size = 0;
 
-  TileGroup terrain_tile_group = createTileGroup(
-      "levels/0/level_0_terrain.csv",
-      resources.terrain_spritesheet.sliced_images, TILE_TERRAIN);
+  TileGroup terrain_tile_group =
+      createTileGroup("levels/0/level_0_terrain.csv",
+                      resources.terrain_spritesheet.sliced_images,
+                      resources.terrain_spritesheet.count, NULL, TILE_TERRAIN);
+  
   TileGroup player_setup_group = createTileGroup(
       "levels/0/level_0_player.csv",
-      resources.player_setup_spritesheet.sliced_images, TILE_PLAYER_SETUP);
+      resources.player_setup_spritesheet.sliced_images,
+      resources.player_setup_spritesheet.count, NULL, TILE_PLAYER_SETUP);
+  
+  TileGroup crate_tile_group =
+      createTileGroup("levels/0/level_0_crates.csv", NULL, 0,
+                      resources.crate_texture, TILE_CRATE);
 
   for (size_t i = 0; i < terrain_tile_group.tiles_size; ++i) {
     tiles_arr[tiles_size++] = terrain_tile_group.tiles[i];
@@ -35,6 +44,11 @@ Map createMap(int level_id, Resources resources) {
     tiles_arr[tiles_size++] = player_setup_group.tiles[i];
   }
 
+  for (size_t i = 0; i < crate_tile_group.tiles_size; ++i) {
+    tiles_arr[tiles_size++] = crate_tile_group.tiles[i];
+  }
+
+
   free(terrain_tile_group.tiles);
   free(player_setup_group.tiles);
   return (Map){
@@ -42,7 +56,11 @@ Map createMap(int level_id, Resources resources) {
 }
 
 TileGroup createTileGroup(const char *csv_path, Texture2D *sliced_images,
+                          size_t sliced_images_len, Texture2D *single_texture,
                           TileType tile_type) {
+
+  #define CRATE_Y_OFFSET 23.0f
+
   Tile *tile_arr = (Tile *)malloc(sizeof(Tile) * MAX_TILES);
   size_t tiles_size = 0;
 
@@ -59,8 +77,21 @@ TileGroup createTileGroup(const char *csv_path, Texture2D *sliced_images,
 
         int value = map[i][j];
         if (value != -1) {
+          if (sliced_images != NULL) {
+            if (value >= sliced_images_len) {
+              fprintf(stderr,
+                      "Fejl: value %d uden for sliced_images længde %zu i %s\n",
+                      value, sliced_images_len, csv_path);
+              continue;
+            }
+          }
 
-          texture_ptr = &sliced_images[value];
+          if (single_texture != NULL) {
+            texture_ptr = single_texture;
+          } else {
+            texture_ptr = &sliced_images[value];
+          }
+
           position = (Vector2){j * TILE_SIZE, i * TILE_SIZE};
           switch (tile_type) {
           case TILE_TERRAIN:
@@ -74,15 +105,21 @@ TileGroup createTileGroup(const char *csv_path, Texture2D *sliced_images,
             attributes = setup_attrs;
             attribute_size = sizeof(setup_attrs) / sizeof(setup_attrs[0]);
             break;
+          case TILE_CRATE:
+            static TileAttribute crate_attrs[] = {ATTRIBUTE_COLLIDEABLE};
+            attributes = crate_attrs;
+            attribute_size = sizeof(crate_attrs) / sizeof(crate_attrs[0]);
+            position.y += CRATE_Y_OFFSET;
+            break;
           default:
             attributes = NULL;
             attribute_size = 0;
             break;
           }
-          tile_arr[tiles_size] =
-              createTile(texture_ptr, position, attributes, attribute_size);
 
-          ++tiles_size;
+          tile_arr[tiles_size++] =
+              createTile(texture_ptr, tile_type, position, attributes, attribute_size);
+
         }
       }
     }
@@ -98,7 +135,7 @@ void drawTile(Tile *tile) {
     if (tile->tile_attributes[i] == ATTRIBUTE_INVISIBLE)
       return;
   }
-
+  
   DrawTextureV(*(tile->texture), tile->position, WHITE);
 }
 

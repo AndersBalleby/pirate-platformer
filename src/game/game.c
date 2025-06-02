@@ -1,28 +1,15 @@
 #include "game.h"
+#include "resources.h"
+#include <raylib.h>
 
 Game createGame() {
-
-  Spritesheet terrain_spritesheet = loadSpritesheet(TERRAIN_SPRITESHEET);
-  if (terrain_spritesheet.sliced_images == NULL ||
-      terrain_spritesheet.count == 0) {
-    perror("kunne ikke indlæse spritesheet fra terrain tiles");
-    exit(-1); // todo find på noget bedre her
-  }
-
-  Spritesheet player_setup_spritesheet =
-      loadSpritesheet(PLAYER_SETUP_SPRITESHEET);
-  if (player_setup_spritesheet.sliced_images == NULL ||
-      player_setup_spritesheet.count == 0) {
-    perror("kunne ikke indlæse spritesheet fra player setup");
-    exit(-1); // todo find på noget bedre her
-  }
 
   Sky sky = initSky();
 
   return (Game){
       .player = createPlayer(),
       .map = createMap(
-          0, (Resources){terrain_spritesheet, player_setup_spritesheet}),
+          0, loadResources()),
       .camera = initCamera(),
       .sky = sky,
   };
@@ -56,7 +43,7 @@ void horizontalMovementCollision(Game *game) {
     }
 
     if (!collideable)
-      return;
+      continue;
 
     if (CheckCollisionRecs(tiles_arr[i].collision_rect,
                            player->collision_rect)) {
@@ -91,7 +78,7 @@ void verticalMovementCollision(Game *game) {
     }
 
     if (!collideable)
-      return;
+      continue;
 
     if (CheckCollisionRecs(tiles_arr[i].collision_rect,
                            player->collision_rect)) {
@@ -125,9 +112,9 @@ void drawMap(P_Camera *camera, Player *player, Map *map) {
 }
 
 void stopGame(Game *game) {
-  destroyMap(&game->map);
-  destroyPlayer(&game->player);
   destroySky(&game->sky);
+  destroyPlayer(&game->player);
+  destroyMap(&game->map);
 }
 
 Player *getPlayer(Game *game) { return &game->player; }

@@ -25,8 +25,7 @@ typedef enum TileAttribute {
   ATTRIBUTE_ANIMATED
 } TileAttribute;
 
-typedef enum TileType { TILE_TERRAIN, TILE_PLAYER_SETUP, TILE_CRATE} TileType;
-
+typedef enum TileType { TILE_TERRAIN, TILE_PLAYER_SETUP, TILE_CRATE } TileType;
 
 typedef struct {
   Texture2D *texture;
@@ -42,10 +41,14 @@ typedef struct TileGroup {
   size_t tiles_size;
 } TileGroup;
 
-Tile createTile(Texture2D *texture, Vector2 position,
+Tile createTile(Texture2D *texture, TileType type, Vector2 position,
                 TileAttribute *tile_attributes, size_t tile_attribute_size);
 TileGroup createTileGroup(const char *csv_path, Texture2D *sliced_images,
+                          size_t sliced_images_len, Texture2D *single_texture,
                           TileType tile_type);
+
+
+
 void updateTile(Tile *tile);
 void drawTile(Tile *tile);
 
