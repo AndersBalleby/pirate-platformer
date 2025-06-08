@@ -2,16 +2,13 @@
 #include "resources.h"
 #include <raylib.h>
 
-Game createGame() {
-
-  Sky sky = initSky();
+Game createGame(ResourceManager_t *rs_manager) {
 
   return (Game){
       .player = createPlayer(),
-      .map = createMap(
-          0, loadResources()),
+      .map = createMap(0, rs_manager),
       .camera = initCamera(),
-      .sky = sky,
+      .sky = initSky(),
   };
 }
 

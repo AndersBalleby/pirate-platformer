@@ -1,3 +1,4 @@
+#include "game/resources.h"
 #include "raylib.h"
 
 // Personal imports
@@ -13,8 +14,9 @@ int main() {
   SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
   InitWindow(WIN_WIDTH, WIN_HEIGHT, WIN_NAME);
   SetTargetFPS(60);
-
-  Game game = createGame();
+  
+  ResourceManager_t *rs_manager = initResourceManager(); 
+  Game game = createGame(rs_manager);
   while (!WindowShouldClose()) {
     BeginDrawing();
 
@@ -28,9 +30,9 @@ int main() {
 
     EndDrawing();
   }
-
+  
+  destroyResourceManager(rs_manager);
   stopGame(&game);
-
   CloseWindow();
   return 0;
 }

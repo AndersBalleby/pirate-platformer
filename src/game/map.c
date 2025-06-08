@@ -1,4 +1,5 @@
 #include "map.h"
+#include "resources.h"
 #include <raylib.h>
 
 Tile createTile(Texture2D *texture, TileType type, Vector2 position,
@@ -14,53 +15,123 @@ Tile createTile(Texture2D *texture, TileType type, Vector2 position,
                 .tile_attribute_size = tile_attribute_size};
 }
 
-Map createMap(int level_id, Resources resources) {
+Map createMap(int level_id, ResourceManager_t *rs_manager) {
   Tile *tiles_arr = (Tile *)malloc(sizeof(Tile) * MAX_TILES);
   if (tiles_arr == NULL) {
     return (Map){.tiles_arr = NULL, .arr_size = 0};
   }
+  
+  /* LOAD RESOURCES */
+  loadResource(rs_manager, "crate", PATH_CRATE_IMAGE, true);
+  loadResource(rs_manager, "bg_palm", PATH_BG_PALM_IMAGE, true);
+  loadResource(rs_manager, "fg_palm_large", PATH_FG_PALM_LARGE_IMAGE, true);
+  loadResource(rs_manager, "fg_palm_small", PATH_FG_PALM_SMALL_IMAGE, true);
 
+  /* LOAD SPRITESHEETS */ 
+  loadSpritesheet(rs_manager, "terrain", PATH_TERRAIN_SPRITESHEET);
+  loadSpritesheet(rs_manager, "grass", PATH_GRASS_SPRITESHEET); 
+  //loadSpritesheet(rs_manager, "coin", PATH_COIN_SPRITESHEET); 
+
+  /* CHECK RESOURCES */
+  Resource_t *crate_resource = getResource(rs_manager, "crate");
+  if (crate_resource == NULL) {
+    printf("Fejl i indhentning af crate resource\n");
+    free(tiles_arr);
+    return (Map){.tiles_arr = NULL, .arr_size = 0};
+  }
+  
+  Resource_t *bg_palm_resource = getResource(rs_manager, "bg_palm");
+  if (bg_palm_resource == NULL) {
+    printf("Fejl i indhentning af bg_palm resource\n");
+    free(tiles_arr);
+    return (Map){.tiles_arr = NULL, .arr_size = 0};
+  }
+  
+  Resource_t *fg_palm_large_resource = getResource(rs_manager, "fg_palm_large");
+  if (fg_palm_large_resource == NULL) {
+    printf("Fejl i indhentning af fg_palm_large resource\n");
+    free(tiles_arr);
+    return (Map){.tiles_arr = NULL, .arr_size = 0};
+  }
+
+  Resource_t *fg_palm_small_resource = getResource(rs_manager, "fg_palm_small");
+  if (fg_palm_small_resource == NULL) {
+    printf("Fejl i indhentning af fg_palm_small resource\n");
+    free(tiles_arr);
+    return (Map){.tiles_arr = NULL, .arr_size = 0};
+  }
+
+  /* CHECK SPRITESHEETS */
+  // Terrain
+  Spritesheet_t *terrain_sheet = getSpritesheet(rs_manager, "terrain");
+  if (terrain_sheet == NULL) {
+    printf("Fejl: kunne ikke indhente terrain spritesheet\n");
+    free(tiles_arr);
+    return (Map){.tiles_arr = NULL, .arr_size = 0};
+  }
+ 
+  Spritesheet_t *grass_sheet = getSpritesheet(rs_manager, "grass");
+  if (grass_sheet == NULL) {
+    printf("Fejl: kunne ikke indhente grass spritesheet\n");
+    free(tiles_arr);
+    return (Map){.tiles_arr = NULL, .arr_size = 0};
+  }
+
+  // Coins
+  /*
+  Spritesheet_t *coin_sheet = getSpritesheet(rs_manager, "coin");
+  if (coin_sheet == NULL) {
+    printf("Fejl: kunne ikke indhente coin spritesheet\n");
+    free(tiles_arr);
+    return (Map){.tiles_arr = NULL, .arr_size = 0};
+  }
+  */
+
+  
+  /* CREATE TILEGROUPS */
+  TileGroup terrain_group = createTileGroup(
+      PATH_TERRAIN_CSV, terrain_sheet->sliced_images,
+      terrain_sheet->count, NULL, TYPE_TILE_TERRAIN);
+
+  
+  TileGroup crate_group = createTileGroup(PATH_CRATE_CSV, NULL, 0,
+                                         &crate_resource->texture, TYPE_TILE_CRATE);
+
+  TileGroup grass_group = createTileGroup(PATH_GRASS_CSV, grass_sheet->sliced_images, grass_sheet->count, NULL, TYPE_TILE_GRASS);
+
+  TileGroup bg_palm_group = createTileGroup(PATH_BG_PALM_CSV, NULL, 0, &bg_palm_resource->texture, TYPE_TILE_BG_PALM);
+
+  TileGroup fg_palm_large_group = createTileGroup(PATH_FG_PALM_CSV, NULL, 0, &fg_palm_large_resource->texture, TYPE_TILE_FG_PALM_LARGE);
+
+  TileGroup fg_palm_small_group = createTileGroup(PATH_FG_PALM_CSV, NULL, 0, &fg_palm_small_resource->texture, TYPE_TILE_FG_PALM_SMALL);
+
+  /* 
+  TileGroup coin_group = createTileGroup(PATH_COIN_CSV, coin_sheet->sliced_images, coin_sheet->count, NULL, TYPE_TILE_COIN); 
+*/
   size_t tiles_size = 0;
+  insertTiles(&crate_group, tiles_arr, &tiles_size);
+  insertTiles(&terrain_group, tiles_arr, &tiles_size);
+  insertTiles(&grass_group, tiles_arr, &tiles_size);
+  insertTiles(&bg_palm_group, tiles_arr, &tiles_size);
+  insertTiles(&fg_palm_large_group, tiles_arr, &tiles_size);
+  printf("TILES SIZE: %zu\n", tiles_size);
+  //insertTiles(&coin_group, tiles_arr, &tiles_size);
 
-  TileGroup terrain_tile_group =
-      createTileGroup("levels/0/level_0_terrain.csv",
-                      resources.terrain_spritesheet.sliced_images,
-                      resources.terrain_spritesheet.count, NULL, TILE_TERRAIN);
-  
-  TileGroup player_setup_group = createTileGroup(
-      "levels/0/level_0_player.csv",
-      resources.player_setup_spritesheet.sliced_images,
-      resources.player_setup_spritesheet.count, NULL, TILE_PLAYER_SETUP);
-  
-  TileGroup crate_tile_group =
-      createTileGroup("levels/0/level_0_crates.csv", NULL, 0,
-                      resources.crate_texture, TILE_CRATE);
-
-  for (size_t i = 0; i < terrain_tile_group.tiles_size; ++i) {
-    tiles_arr[tiles_size++] = terrain_tile_group.tiles[i];
-  }
-
-  for (size_t i = 0; i < player_setup_group.tiles_size; ++i) {
-    tiles_arr[tiles_size++] = player_setup_group.tiles[i];
-  }
-
-  for (size_t i = 0; i < crate_tile_group.tiles_size; ++i) {
-    tiles_arr[tiles_size++] = crate_tile_group.tiles[i];
-  }
-
-
-  free(terrain_tile_group.tiles);
-  free(player_setup_group.tiles);
   return (Map){
-      .tiles_arr = tiles_arr, .arr_size = tiles_size, .resources = resources};
+      .tiles_arr = tiles_arr, .arr_size = tiles_size, .rs_manager = rs_manager};
+}
+
+void insertTiles(TileGroup *group, Tile *tile_arr, size_t *size_ptr) {
+  for (size_t i = 0; i < group->tiles_size; ++i) {
+    tile_arr[(*size_ptr)++] = group->tiles[i];
+  }
 }
 
 TileGroup createTileGroup(const char *csv_path, Texture2D *sliced_images,
                           size_t sliced_images_len, Texture2D *single_texture,
                           TileType tile_type) {
 
-  #define CRATE_Y_OFFSET 23.0f
-
+  const float CRATE_Y_OFFSET = 23.0f;
   Tile *tile_arr = (Tile *)malloc(sizeof(Tile) * MAX_TILES);
   size_t tiles_size = 0;
 
@@ -94,32 +165,56 @@ TileGroup createTileGroup(const char *csv_path, Texture2D *sliced_images,
 
           position = (Vector2){j * TILE_SIZE, i * TILE_SIZE};
           switch (tile_type) {
-          case TILE_TERRAIN:
+          case TYPE_TILE_TERRAIN:
             static TileAttribute terrain_attrs[] = {ATTRIBUTE_COLLIDEABLE};
             attributes = terrain_attrs;
-            attribute_size = sizeof(terrain_attrs) / sizeof(terrain_attrs[0]);
+            attribute_size = 1;
             break;
 
-          case TILE_PLAYER_SETUP:
+          case TYPE_TILE_PLAYER_SETUP:
             static TileAttribute setup_attrs[] = {ATTRIBUTE_INVISIBLE};
             attributes = setup_attrs;
-            attribute_size = sizeof(setup_attrs) / sizeof(setup_attrs[0]);
+            attribute_size = 1;
             break;
-          case TILE_CRATE:
+          case TYPE_TILE_CRATE:
             static TileAttribute crate_attrs[] = {ATTRIBUTE_COLLIDEABLE};
             attributes = crate_attrs;
-            attribute_size = sizeof(crate_attrs) / sizeof(crate_attrs[0]);
+            attribute_size = 1;
             position.y += CRATE_Y_OFFSET;
             break;
-          default:
+          case TYPE_TILE_GRASS:
+            static TileAttribute grass_attrs[] = {ATTRIBUTE_DECORATION};
+            attributes = grass_attrs;
+            attribute_size = 1;
+            break;
+          case TYPE_TILE_BG_PALM:
+            static TileAttribute bg_palm_attrs[] = {ATTRIBUTE_DECORATION};
+            attributes = bg_palm_attrs;
+            attribute_size = 1;
+            position.y -= 64;
+            break;
+            case TYPE_TILE_FG_PALM_LARGE: 
+            case TYPE_TILE_FG_PALM_SMALL:
+            static TileAttribute fg_palm_attrs[] = {ATTRIBUTE_COLLIDEABLE};
+            attributes = fg_palm_attrs;
+            attribute_size = 1;
+            position.y -= 64;
+            break;
+          /*
+            case TYPE_TILE_COIN:
+            static TileAttribute coin_attrs[] = {ATTRIBUTE_COLLIDEABLE};
+            attributes = coin_attrs;
+            attribute_size = 1;
+            break;
+          */
+            default:
             attributes = NULL;
             attribute_size = 0;
             break;
           }
 
-          tile_arr[tiles_size++] =
-              createTile(texture_ptr, tile_type, position, attributes, attribute_size);
-
+          tile_arr[tiles_size++] = createTile(texture_ptr, tile_type, position,
+                                              attributes, attribute_size);
         }
       }
     }
@@ -135,7 +230,7 @@ void drawTile(Tile *tile) {
     if (tile->tile_attributes[i] == ATTRIBUTE_INVISIBLE)
       return;
   }
-  
+
   DrawTextureV(*(tile->texture), tile->position, WHITE);
 }
 
@@ -146,8 +241,4 @@ void updateMap(Map *map) {
   }
 }
 
-void destroyMap(Map *map) {
-  destroyResources(&map->resources);
-
-  free(map->tiles_arr);
-}
+void destroyMap(Map *map) { free(map->tiles_arr); }
