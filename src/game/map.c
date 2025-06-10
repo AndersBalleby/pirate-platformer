@@ -94,27 +94,21 @@ Map createMap(int level_id, ResourceManager_t *rs_manager) {
       terrain_sheet->count, NULL, TYPE_TILE_TERRAIN);
 
   
-  TileGroup crate_group = createTileGroup(PATH_CRATE_CSV, NULL, 0,
-                                         &crate_resource->texture, TYPE_TILE_CRATE);
-
+  TileGroup crate_group = createTileGroup(PATH_CRATE_CSV, NULL, 0, &crate_resource->texture, TYPE_TILE_CRATE);
   TileGroup grass_group = createTileGroup(PATH_GRASS_CSV, grass_sheet->sliced_images, grass_sheet->count, NULL, TYPE_TILE_GRASS);
-
   TileGroup bg_palm_group = createTileGroup(PATH_BG_PALM_CSV, NULL, 0, &bg_palm_resource->texture, TYPE_TILE_BG_PALM);
-
   TileGroup fg_palm_large_group = createTileGroup(PATH_FG_PALM_CSV, NULL, 0, &fg_palm_large_resource->texture, TYPE_TILE_FG_PALM_LARGE);
-
   TileGroup fg_palm_small_group = createTileGroup(PATH_FG_PALM_CSV, NULL, 0, &fg_palm_small_resource->texture, TYPE_TILE_FG_PALM_SMALL);
 
   /* 
   TileGroup coin_group = createTileGroup(PATH_COIN_CSV, coin_sheet->sliced_images, coin_sheet->count, NULL, TYPE_TILE_COIN); 
 */
   size_t tiles_size = 0;
+  insertTiles(&bg_palm_group, tiles_arr, &tiles_size);
   insertTiles(&crate_group, tiles_arr, &tiles_size);
   insertTiles(&terrain_group, tiles_arr, &tiles_size);
   insertTiles(&grass_group, tiles_arr, &tiles_size);
-  insertTiles(&bg_palm_group, tiles_arr, &tiles_size);
   insertTiles(&fg_palm_large_group, tiles_arr, &tiles_size);
-  printf("TILES SIZE: %zu\n", tiles_size);
   //insertTiles(&coin_group, tiles_arr, &tiles_size);
 
   return (Map){
@@ -132,6 +126,7 @@ TileGroup createTileGroup(const char *csv_path, Texture2D *sliced_images,
                           TileType tile_type) {
 
   const float CRATE_Y_OFFSET = 23.0f;
+  const float BG_PALM_Y_OFFSET = -64.0f;
   Tile *tile_arr = (Tile *)malloc(sizeof(Tile) * MAX_TILES);
   size_t tiles_size = 0;
 
@@ -198,7 +193,7 @@ TileGroup createTileGroup(const char *csv_path, Texture2D *sliced_images,
             static TileAttribute fg_palm_attrs[] = {ATTRIBUTE_COLLIDEABLE};
             attributes = fg_palm_attrs;
             attribute_size = 1;
-            position.y -= 64;
+            position.y += BG_PALM_Y_OFFSET;
             break;
           /*
             case TYPE_TILE_COIN:
