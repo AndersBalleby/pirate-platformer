@@ -1,5 +1,6 @@
 #pragma once
 
+#include "decoration.h"
 #include "map.h"
 #include "player.h"
 
@@ -9,7 +10,7 @@
 #define CAMERA_X 300
 #define CAMERA_Y 350
 #define CAMERA_WIDTH 350
-#define CAMERA_HEIGHT 200
+#define CAMERA_HEIGHT 350
 
 typedef struct P_Camera {
   Rectangle rect;
@@ -18,4 +19,4 @@ typedef struct P_Camera {
 
 P_Camera initCamera();
 void boxTargetCamera(P_Camera *camera, Player *player);
-void customDraw(P_Camera *camera, Tile *tiles_arr, size_t tiles_size, Player *player);
+void customDraw(P_Camera *camera, Tile *tiles_arr, size_t tiles_size, Player *player, Water_t *water);

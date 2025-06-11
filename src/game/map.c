@@ -182,7 +182,7 @@ TileGroup createTileGroup(const char *csv_path, Texture2D *sliced_images,
             attributes = grass_attrs;
             attribute_size = 1;
             break;
-          case TYPE_TILE_BG_PALM:
+          case TYPE_TILE_BG_PALM: 
             static TileAttribute bg_palm_attrs[] = {ATTRIBUTE_DECORATION};
             attributes = bg_palm_attrs;
             attribute_size = 1;

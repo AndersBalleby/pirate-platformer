@@ -1,13 +1,46 @@
-#include "sky.h"
+#include "decoration.h"
 #include <raylib.h>
 
-Sky initSky() {
-  return (Sky){.bottom = LoadTexture(SKY_BOTTOM_PATH),
+/* WATER */
+Water_t initWater() {
+  return (Water_t) {
+    .water_tiles = {
+      LoadTexture(WATER_PATH),
+      LoadTexture(WATER_2),
+      LoadTexture(WATER_3),
+      LoadTexture(WATER_4)
+    },
+    .anim_index = 0.0f
+  };
+}
+
+void animateWater(Water_t *water) {
+  if(water->anim_index >= 3) {
+    water->anim_index = 0;
+  }
+
+ water->anim_index += WATER_SPEED;
+}
+
+void drawWater(Water_t *water, Vector2 offset) {
+  Texture2D texture = water->water_tiles[(int) water->anim_index];
+  DrawTexturePro(texture,
+                 (Rectangle){0.0f, 0.0f, texture.width, texture.height},
+                 (Rectangle){0.0f, offset.y, 1280, (float) 100},
+                 (Vector2){0, 0},
+                 0.0f,
+                 WHITE);
+}
+
+
+/* SKY */
+Sky_t initSky() {
+  return (Sky_t){.bottom = LoadTexture(SKY_BOTTOM_PATH),
                .middle = LoadTexture(SKY_MIDDLE_PATH),
                .top = LoadTexture(SKY_TOP_PATH)};
 }
 
-void drawSky(Sky *sky) {
+void drawSky(Sky_t *sky) {
 
   // top
   DrawTexturePro(sky->top,
@@ -29,7 +62,7 @@ void drawSky(Sky *sky) {
                  (Vector2){0, 0}, 0.0f, WHITE);
 }
 
-void destroySky(Sky *sky) {
+void destroySky(Sky_t *sky) {
   UnloadTexture(sky->top);
   UnloadTexture(sky->middle);
   UnloadTexture(sky->bottom);

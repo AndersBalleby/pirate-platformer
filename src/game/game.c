@@ -9,18 +9,20 @@ Game createGame(ResourceManager_t *rs_manager) {
       .map = createMap(0, rs_manager),
       .camera = initCamera(),
       .sky = initSky(),
+      .water = initWater(),
   };
 }
 
 void runGame(Game *game) {
   updateMap(&game->map);
   updatePlayer(&game->player);
+  animateWater(&game->water);
 
   horizontalMovementCollision(game);
   verticalMovementCollision(game);
 
   drawSky(&game->sky);
-  drawMap(&game->camera, &game->player, &game->map);
+  drawMap(game);
   drawPlayer(&game->player, game->camera.offset);
 }
 
@@ -104,8 +106,8 @@ void verticalMovementCollision(Game *game) {
   }
 }
 
-void drawMap(P_Camera *camera, Player *player, Map *map) {
-  customDraw(camera, map->tiles_arr, map->arr_size, player);
+void drawMap(Game *game) {
+  customDraw(&game->camera, game->map.tiles_arr, game->map.arr_size, &game->player, &game->water);
 }
 
 void stopGame(Game *game) {
