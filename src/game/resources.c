@@ -87,7 +87,6 @@ bool loadResource(ResourceManager_t *rs_manager, const char *name,
 }
 
 
-
 bool loadSpritesheet(ResourceManager_t *rs_manager, const char *name,
                      const char *file_path) {
   if (!validatePath(file_path)) {

@@ -67,11 +67,8 @@ typedef struct TileGroup {
   size_t tiles_size;
 } TileGroup;
 
-Tile createTile(Texture2D *texture, TileType type, Vector2 position,
-                TileAttribute *tile_attributes, size_t tile_attribute_size);
-TileGroup createTileGroup(const char *csv_path, Texture2D *sliced_images,
-                          size_t sliced_images_len, Texture2D *single_texture,
-                          TileType tile_type);
+Tile createTile(Texture2D *texture, TileType type, Vector2 position, TileAttribute *tile_attributes, size_t tile_attribute_size);
+TileGroup createTileGroup(ResourceManager_t *rs_manager, const char *csv_path, TileType tile_type);
 
 void updateTile(Tile *tile);
 void drawTile(Tile *tile);

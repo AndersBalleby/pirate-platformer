@@ -5,7 +5,7 @@
 
 #include <stdlib.h>
 
-#define MAX_SPRITESHEET_SIZE 2
+#define MAX_SPRITESHEET_SIZE 3
 #define MAX_SLICED_TEXTURES 16
 #define TILE_SIZE 64
 /*

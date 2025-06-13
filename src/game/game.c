@@ -112,6 +112,7 @@ void drawMap(Game *game) {
 
 void stopGame(Game *game) {
   destroySky(&game->sky);
+  destroyWater(&game->water);
   destroyPlayer(&game->player);
   destroyMap(&game->map);
 }

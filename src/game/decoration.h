@@ -7,10 +7,10 @@
 
 /* WATER */
 #define WATER_SPEED 0.12f
-#define WATER_PATH "resources/decoration/water/1.png"
-#define WATER_2 "resources/decoration/water/2.png"
-#define WATER_3 "resources/decoration/water/3.png"
-#define WATER_4 "resources/decoration/water/4.png"
+#define WATER_PATH_1 "resources/decoration/water/1.png"
+#define WATER_PATH_2 "resources/decoration/water/2.png"
+#define WATER_PATH_3 "resources/decoration/water/3.png"
+#define WATER_PATH_4 "resources/decoration/water/4.png"
 
 typedef struct Water {
   Texture2D water_tiles[4];
@@ -20,6 +20,7 @@ typedef struct Water {
 Water_t initWater();
 void animateWater(Water_t *water);
 void drawWater(Water_t *water, Vector2 offset);
+void destroyWater(Water_t *water);
 
 /* SKY */
 #define SKY_BOTTOM_PATH "resources/decoration/sky/sky_bottom.png"
